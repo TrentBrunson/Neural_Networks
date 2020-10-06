@@ -1,5 +1,6 @@
 #%%
-# Import dependencies
+
+Import dependencies
 import pandas as pd
 import matplotlib as plt
 from sklearn.datasets import make_blobs
@@ -33,6 +34,7 @@ X_scaler.fit(X_train)
 X_train_scaled = X_scaler.transform(X_train)
 X_test_scaled = X_scaler.transform(X_test)
 # %%
+# build input and hidden layers
 # Create the Keras Sequential model
 # input and first hidden layer are always built in the same instance
 nn_model = tf.keras.models.Sequential()
@@ -47,4 +49,26 @@ nn_model = tf.keras.models.Sequential()
 
 # Add our first Dense layer, including the input layer
 nn_model.add(tf.keras.layers.Dense(units=1, activation="relu", input_dim=2))
+# %%
+# build output layer
+# binary outputs only require one output neuron
+# Add the output layer that uses a probability activation function
+nn_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+# %%
+# verify
+
+# Check the structure of the Sequential model
+nn_model.summary()
+# %%
+# use the adam optimizer, which uses a gradient descent approach 
+# to ensure that the algorithm will not get stuck on weaker classifying variables and features
+# As for the loss function, use binary_crossentropy, 
+# which is specifically designed to evaluate a binary classification model
+# two main types of evaluation metrics—the model predictive accuracy and model mean squared error (MSE) 
+# accuracy for classification models and mse for regression models
+# model predictive accuracy, the higher the number the better, whereas for regression models, 
+# MSE should reduce to zero
+# %%
+# Compile the Sequential model together and customize metrics
+nn_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 # %%
