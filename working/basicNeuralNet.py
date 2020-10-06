@@ -85,3 +85,64 @@ history_df.plot(y="loss")
 # Plot the accuracy over time/# of epochs
 history_df.plot(y="accuracy")
 # %%
+# use the evaluate method and print the testing loss and accuracy values
+
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn_model.evaluate(X_test_scaled,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+# %%
+# use predict_classes method to generate predictions on new data
+
+# Predict the classification of a new set of blob data
+new_X, new_Y = make_blobs(n_samples=10, centers=2, n_features=2, random_state=78)
+new_X_scaled = X_scaler.transform(new_X)
+nn_model.predict_classes(new_X_scaled)
+# %%
+# generate some nonlinear moon-shaped data using Scikit-learn’s make_moons method 
+# and visualize it using Pandas and Matplotlib
+
+from sklearn.datasets import make_moons
+
+# Creating dummy nonlinear data
+X_moons, y_moons = make_moons(n_samples=1000, noise=0.08, random_state=78)
+
+# Transforming y_moons to a vertical vector
+y_moons = y_moons.reshape(-1, 1)
+
+# Creating a DataFrame to plot the nonlinear dummy data
+df_moons = pd.DataFrame(X_moons, columns=["Feature 1", "Feature 2"])
+df_moons["Target"] = y_moons
+
+# Plot the nonlinear dummy data
+df_moons.plot.scatter(x="Feature 1",y="Feature 2", c="Target",colormap="winter")
+# %%
+# split data into training & test sets
+# standardize & scale the data
+
+# Create training and testing sets
+X_moon_train, X_moon_test, y_moon_train, y_moon_test = train_test_split(
+    X_moons, y_moons, random_state=78
+)
+
+# Create the scaler instance
+X_moon_scaler = skl.preprocessing.StandardScaler()
+
+# Fit the scaler
+X_moon_scaler.fit(X_moon_train)
+
+# Scale the data
+X_moon_train_scaled = X_moon_scaler.transform(X_moon_train)
+X_moon_test_scaled = X_moon_scaler.transform(X_moon_test)
+# %%
+# Training the model with the nonlinear data
+model_moon = nn_model.fit(X_moon_train_scaled, y_moon_train, epochs=100, shuffle=True)
+# %%
+# Create a DataFrame containing training history
+history_df = pd.DataFrame(model_moon.history, index=range(1,len(model_moon.history["loss"])+1))
+
+# Plot the loss
+history_df.plot(y="loss")
+# %%
+# Plot the loss
+history_df.plot(y="accuracy") 
+# %%
