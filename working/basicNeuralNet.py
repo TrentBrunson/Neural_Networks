@@ -146,3 +146,31 @@ history_df.plot(y="loss")
 # Plot the loss
 history_df.plot(y="accuracy") 
 # %%
+# creating new model with 6 neurons this time
+
+# Generate our new Sequential model
+new_model = tf.keras.models.Sequential()
+# %%
+# Add the input and hidden layer
+number_inputs = 2
+number_hidden_nodes = 6
+
+new_model.add(tf.keras.layers.Dense(units=number_hidden_nodes, activation="relu", input_dim=number_inputs))
+
+# Add the output layer that uses a probability activation function
+new_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+# %%
+# Compile the Sequential model together and customize metrics
+new_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+# Fit the model to the training data
+new_fit_model = new_model.fit(X_moon_train_scaled, y_moon_train, epochs=100, shuffle=True)
+
+# %%
+# means of optimizing a neural network:
+
+# Check input dataset.
+# Add more neurons to a hidden layer.
+# Add additional hidden layers.
+# Use a different activation function for the hidden layers.
+# Add additional epochs to the training regimen.
