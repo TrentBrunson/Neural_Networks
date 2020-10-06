@@ -1,6 +1,5 @@
 #%%
-
-Import dependencies
+# Import dependencies
 import pandas as pd
 import matplotlib as plt
 from sklearn.datasets import make_blobs
@@ -71,4 +70,18 @@ nn_model.summary()
 # %%
 # Compile the Sequential model together and customize metrics
 nn_model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+# %%
+# fit method and provide the x training values and y training values, as well as the number of epochs
+# Fit the model to the training data
+fit_model = nn_model.fit(X_train_scaled, y_train, epochs=100)
+# %%
+# the model object stores loss and accuracy metrics for all epochs
+# Create a DataFrame containing training history
+history_df = pd.DataFrame(fit_model.history, index=range(1,len(fit_model.history["loss"])+1))
+
+# Plot the loss
+history_df.plot(y="loss")
+# %%
+# Plot the accuracy over time/# of epochs
+history_df.plot(y="accuracy")
 # %%
