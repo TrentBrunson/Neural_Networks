@@ -43,3 +43,6 @@ encode_df = pd.DataFrame(enc.fit_transform(ramen_df.Country.values.reshape(-1,1)
 encode_df.columns = enc.get_feature_names(['Country'])
 encode_df.head()
 # %%
+# Merge the two DataFrames together and drop the Country column
+ramen_df.merge(encode_df,left_index=True,right_index=True).drop("Country",1)
+# %%
