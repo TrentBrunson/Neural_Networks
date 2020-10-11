@@ -74,5 +74,55 @@ X_scaler = scaler.fit(X_train)
 # Scale the data
 X_train_scaled = X_scaler.transform(X_train)
 X_test_scaled = X_scaler.transform(X_test)
+
+"""
+Data pre-processing complete
+"""
 # %%
 # after scaling check to make sure no data is lost from DF
+
+# input layer: number of input features to = number of variables
+# hidden layers: 2
+# reLu activation function to ID non-linear characteristics of the input values
+# output layer: sigmoid activation f(x) to help predict probability
+# an employee is at risk for attrition
+
+# Define the model - deep neural net
+number_input_features = len(X_train[0])
+hidden_nodes_layer1 =  8
+hidden_nodes_layer2 = 5
+
+nn = tf.keras.models.Sequential()
+
+# 1st hidden layer
+nn.add(
+    tf.keras.layers.Dense(
+        units=hidden_nodes_layer1, 
+        input_dim=number_input_features, 
+        activation='relu'
+    )
+)
+
+# 2nd hidden layer
+nn.add(
+    tf.keras.layers.Dense(
+        units=hidden_nodes_layer2, 
+        activation='relu'
+    )
+)
+
+# Output layer
+nn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
+
+# check structure of the model
+nn.summary()
+# %%
+# next compile model & define loss and accuracy metrics
+
+# compile the model
+# since model tp be used as a binary classifier, 
+# use the binary_crossentropy loss function, 
+# adam optimizer, and accuracy metrics, 
+# which are the same parameters we used for a basic neural network
+nn.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+# %%
