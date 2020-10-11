@@ -53,4 +53,26 @@ attrition_df = attrition_df.drop(attrition_cat,1)
 attrition_df.head()
 # %%
 # next split training and testing data
+# then scale and fit
 # %%
+# only need to keep “Attrition_Yes” column; ignore “Attrition_No” column-it's redundant
+
+# Split our preprocessed data into our features and target arrays
+y = attrition_df["Attrition_Yes"].values
+X = attrition_df.drop(["Attrition_Yes","Attrition_No"],1).values
+
+# Split the preprocessed data into a training and testing dataset
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=78)
+
+# %%
+# Create a StandardScaler instance
+scaler = StandardScaler()
+
+# Fit the StandardScaler
+X_scaler = scaler.fit(X_train)
+
+# Scale the data
+X_train_scaled = X_scaler.transform(X_train)
+X_test_scaled = X_scaler.transform(X_test)
+# %%
+# after scaling check to make sure no data is lost from DF
