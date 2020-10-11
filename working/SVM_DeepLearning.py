@@ -100,3 +100,8 @@ y_pred = svm.predict(X_test_scaled)
 print(f" SVM model accuracy: {accuracy_score(y_test,y_pred):.3f}")
 # %%
 # train and evaluate deep learning model
+
+# 1st hiddne layer have input_dim = length of scale feature data X
+# 10 neuron units
+
+# 2nd hidden layer with 5 neurons
