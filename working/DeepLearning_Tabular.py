@@ -116,6 +116,16 @@ nn.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 
 # check structure of the model
 nn.summary()
+#%%
+# label checkpoints by epoch number & contain them within their own folder
+# Import checkpoint dependencies
+import os
+from tensorflow.keras.callbacks import ModelCheckpoint
+
+# Define the checkpoint path and filenames
+os.makedirs("checkpoints/",exist_ok=True)
+checkpoint_path = "checkpoints/weights.{epoch:02d}.hdf5"
+
 # %%
 # next compile model & define loss and accuracy metrics
 
@@ -125,11 +135,70 @@ nn.summary()
 # adam optimizer, and accuracy metrics, 
 # which are the same parameters we used for a basic neural network
 nn.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# create a callback object for our deep learning model
+# Create a callback that saves the model's weights every 5 epochs
+cp_callback = ModelCheckpoint(
+    filepath=checkpoint_path,
+    verbose=1,
+    save_weights_only=True,
+    save_freq=1000)
+
+# Train the model with callback
+fit_model = nn.fit(X_train_scaled,y_train,epochs=100,callbacks=[cp_callback])
+
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+
 # %%
-# Train the model
+# Train the model without callbacks
 fit_model = nn.fit(X_train,y_train,epochs=100)
 # %%
 # Evaluate the model using the test data
 model_loss, model_accuracy = nn.evaluate(X_test,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+# %%
+# Practice restoring weights
+# 
+# use Keras Sequential model’s load_weights method to restore model weights. 
+# Defining another model to test this functionality, 
+# but with restored weights using the checkpoints rather than training the model
+
+# Define the model - deep neural net
+number_input_features = len(X_train[0])
+hidden_nodes_layer1 =  8
+hidden_nodes_layer2 = 5
+
+nn_new = tf.keras.models.Sequential()
+
+# First hidden layer
+nn_new.add(
+    tf.keras.layers.Dense(
+        units=hidden_nodes_layer1, 
+        input_dim=number_input_features, 
+        activation="relu"
+        )
+)
+
+# Second hidden layer
+nn_new.add(
+    tf.keras.layers.Dense(
+        units=hidden_nodes_layer2, 
+        activation="relu"
+        )
+)
+
+# Output layer
+nn_new.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+# Compile the model
+nn_new.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+# Restore the model weights
+nn_new.load_weights("checkpoints/weights.86.hdf5")
+
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn_new.evaluate(X_test_scaled,y_test,verbose=2)
 print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
 # %%
