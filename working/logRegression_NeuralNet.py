@@ -62,3 +62,15 @@ nn_model = tf.keras.models.Sequential()
 nn_model.add(tf.keras.layers.Dense(units=16, activation='relu', input_dim=8))
 nn_model.add(tf.keras.layers.Dense(units=1, activation='sigmoid'))
 
+# compile the sequential model together and customize the metrics
+nn_model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# train the model
+fit_model = nn_model.fit(X_train_scaled, y_train, epochs = 100)
+
+# evaluate the model using test data
+model_loss, model_accuracy = nn_model.evaluate(X_test_scaled, y_test, verbose=2)
+
+print(f'Loss: {model_loss}, Accuracy: {model_accuracy}')
+
+# %%
