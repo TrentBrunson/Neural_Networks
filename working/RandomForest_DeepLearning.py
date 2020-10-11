@@ -32,3 +32,20 @@ loans_df[loans_cat].nunique()
 # Check the unique value counts to see if binning is required
 loans_df.Years_in_current_job.value_counts()
 # %%
+# categorical variables look ready to encode
+
+# Create a OneHotEncoder instance
+enc = OneHotEncoder(sparse=False)
+
+# Fit and transform the OneHotEncoder using the categorical variable list
+encode_df = pd.DataFrame(enc.fit_transform(loans_df[loans_cat]))
+
+# Add the encoded variable names to the DataFrame
+encode_df.columns = enc.get_feature_names(loans_cat)
+encode_df.head()
+# %%
+# Merge one-hot encoded features and drop the originals
+loans_df = loans_df.merge(encode_df,left_index=True, right_index=True)
+loans_df = loans_df.drop(loans_cat,1)
+loans_df.head()
+# %%
