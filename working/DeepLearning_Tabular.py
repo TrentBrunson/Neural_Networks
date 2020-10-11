@@ -212,3 +212,6 @@ nn_new.save("trained_attrition.h5")
 # Import the model to a new object
 nn_imported = tf.keras.models.load_model('trained_attrition.h5')
 # %%
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn_new.evaluate(X_test_scaled,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
