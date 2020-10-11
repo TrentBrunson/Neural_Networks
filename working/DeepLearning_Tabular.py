@@ -126,3 +126,10 @@ nn.summary()
 # which are the same parameters we used for a basic neural network
 nn.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 # %%
+# Train the model
+fit_model = nn.fit(X_train,y_train,epochs=100)
+# %%
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn.evaluate(X_test,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+# %%
