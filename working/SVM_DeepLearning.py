@@ -105,3 +105,26 @@ print(f" SVM model accuracy: {accuracy_score(y_test,y_pred):.3f}")
 # 10 neuron units
 
 # 2nd hidden layer with 5 neurons
+
+# Define the model - deep neural net
+number_input_features = len(X_train_scaled[0])
+hidden_nodes_layer1 =  10
+hidden_nodes_layer2 = 5
+
+nn = tf.keras.models.Sequential()
+
+# First hidden layer
+nn.add(
+    tf.keras.layers.Dense(units=hidden_nodes_layer1, input_dim=number_input_features, activation="relu")
+)
+
+# Second hidden layer
+nn.add(tf.keras.layers.Dense(units=hidden_nodes_layer2, activation="relu"))
+
+
+# Output layer
+nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+# Compile the Sequential model together and customize metrics
+nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+# %%
