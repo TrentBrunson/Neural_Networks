@@ -69,4 +69,46 @@ X_train_scaled = X_scaler.transform(X_train)
 X_test_scaled = X_scaler.transform(X_test)
 # %%
 # after splitting data, it is ready for evaluation in both models
+# 1st Random Forest Classifier model
 
+# Create a random forest classifier, 
+# using max recommended # of estimators of 128
+rf_model = RandomForestClassifier(n_estimators=128, random_state=78)
+
+# Fitting the model
+rf_model = rf_model.fit(X_train_scaled, y_train)
+
+# Evaluate the model
+y_pred = rf_model.predict(X_test_scaled)
+print(f" Random forest predictive accuracy: {accuracy_score(y_test,y_pred):.3f}")
+# %%
+# build and evaluate deep learning model
+# Define the model - deep neural net
+number_input_features = len(X_train_scaled[0])
+hidden_nodes_layer1 =  24
+hidden_nodes_layer2 = 12
+
+nn = tf.keras.models.Sequential()
+
+# First hidden layer
+nn.add(
+    tf.keras.layers.Dense(units=hidden_nodes_layer1, input_dim=number_input_features, activation="relu")
+)
+
+# Second hidden layer
+nn.add(tf.keras.layers.Dense(units=hidden_nodes_layer2, activation="relu"))
+
+
+# Output layer
+nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+# Compile the Sequential model together and customize metrics
+nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+# Train the model
+fit_model = nn.fit(X_train_scaled, y_train, epochs=50)
+
+# Evaluate the model using the test data
+model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+# %%
