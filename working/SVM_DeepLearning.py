@@ -115,7 +115,11 @@ nn = tf.keras.models.Sequential()
 
 # First hidden layer
 nn.add(
-    tf.keras.layers.Dense(units=hidden_nodes_layer1, input_dim=number_input_features, activation="relu")
+    tf.keras.layers.Dense(
+        units=hidden_nodes_layer1, 
+        input_dim=number_input_features, 
+        activation="relu"
+        )
 )
 
 # Second hidden layer
@@ -127,4 +131,13 @@ nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
 
 # Compile the Sequential model together and customize metrics
 nn.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
+# %%
+# train and evaluate deep learning model
+
+# Train the model 
+fit_model = nn.fit(X_train_scaled, y_train, epochs=50) 
+
+# Evaluate the model using the test data 
+model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
 # %%
