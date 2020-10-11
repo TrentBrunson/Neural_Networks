@@ -202,3 +202,13 @@ nn_new.load_weights("checkpoints/weights.86.hdf5")
 model_loss, model_accuracy = nn_new.evaluate(X_test_scaled,y_test,verbose=2)
 print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
 # %%
+# export the fully trained classification model from the previous cell
+
+# Export our model to HDF5 file
+nn_new.save("trained_attrition.h5")
+# %%
+# importing the saved model without any structure or context
+
+# Import the model to a new object
+nn_imported = tf.keras.models.load_model('trained_attrition.h5')
+# %%
