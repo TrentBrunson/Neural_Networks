@@ -98,7 +98,6 @@ nn.add(
 # Second hidden layer
 nn.add(tf.keras.layers.Dense(units=hidden_nodes_layer2, activation="relu"))
 
-
 # Output layer
 nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
 
